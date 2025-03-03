@@ -32,6 +32,8 @@ class WebScraper
             }
         }
 
+       
+        // die();
         $this->saveDataToFile($models, $this->outputFile);
     }
 
@@ -560,11 +562,17 @@ class WebScraper
         preg_match('/name="__EVENTVALIDATION" value="(.*?)"/', $html, $eventValidation);
         preg_match('/name="__VIEWSTATEGENERATOR" value="(.*?)"/', $html, $viewStateGenerator);
 
+
         return [
-            '__VIEWSTATE' => $viewState[1] ?? '',
-            '__EVENTVALIDATION' => $eventValidation[1] ?? '',
-            '__VIEWSTATEGENERATOR' => $viewStateGenerator[1] ?? ''
+            '__VIEWSTATEGENERATOR' => '815F84B3',
+    '__EVENTVALIDATION' => 'FJFHMgNNF2lvfuwiQMhmIN0EAnOeHwn2bdb+2t+3r1Nx9Sz/c8IrCBqcXBbEmB0XRtnXh/U6W/Vv0a3bUbXmT/e1Wacb8rJ2HwOeDtI1BojyS8zk0aKUSCEDL7Pj/RRzDQt8Ts/4+QXNldpTymNl3pnVv7U=',
+    '__VIEWSTATE' => 'f7lXGH4DcDqIhUQ1BTTNkgk+OCfRckWmT2qfy5iAHSO4pNQncD1pzUQjwXtuFvbB/wEf9TDqQANwF/FApCiD56DUBp/k4KjN6od3NDEjh8RzOrCis9EgbHQu8nU50+DNTrbtuYqGHQwzoOUy3adbWlRhN4I8PBmZ1tSNM/dp6f3oLU5y9WnpRF2rncwcOTV7a1TbEUeW9YkarmzkZ7J5MCAfBiNK/jHm6p+coWyunaI3A/AjDrAhLSfSu1a6aHPjsYXBVw=='
         ];
+        // return [
+        //     '__VIEWSTATE' => $viewState[1] ?? '',
+        //     '__EVENTVALIDATION' => $eventValidation[1] ?? '',
+        //     '__VIEWSTATEGENERATOR' => $viewStateGenerator[1] ?? ''
+        // ];
     }
 
     /** 
@@ -614,6 +622,12 @@ $urls = [
     'https://www.princecraft.com/ca/en/products/Fishing-Boats.aspx',
     'https://www.princecraft.com/ca/en/products/Pontoon-Boats.aspx'
 ];
+
+$fr_urls = [
+    'https://www.princecraft.com/ca/fr/produits/Bateaux-de-peche.aspx',
+    'https://www.princecraft.com/ca/fr/produits/Pontons.aspx'
+];
+
 $outputFile =  'Ponton-Boats.csv';
 $name = 'en';
 if (php_sapi_name() === 'cli' || PHP_SAPI === 'cli') {
@@ -627,9 +641,20 @@ $scraper = new WebScraper($baseUrl, $outputFile);
 
 // $scraper->modelProducts();
 // die();
+// for english version
 $scraper->scrape($urls, strtolower($name));
-$url = 'https://www.princecraft.com/ca/en/products/Deck-Boats.aspx';
+
+$url = 'https://www.princecraft.com/us/en/products/Deck-Boats.aspx';
+
 $data = $scraper->ExtractCategories($url, strtolower($name));
+
+$name = 'fr';
+// for french version
+$scraper->scrape($fr_urls, strtolower($name));
+
+// For fr
+$fr_url = 'https://www.princecraft.com/ca/fr/produits/Bateaux-pontes.aspx';
+$data = $scraper->ExtractCategories($fr_url, strtolower($name));
 
 // $data = $scraper->extractSpecifications();
 
