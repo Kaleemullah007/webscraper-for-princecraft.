@@ -629,7 +629,7 @@ $fr_urls = [
 ];
 
 $outputFile =  'Ponton-Boats.csv';
-$name = 'fr';
+$name = 'en';
 if (php_sapi_name() === 'cli' || PHP_SAPI === 'cli') {
     echo "Which Page do want to Scrap, Default both pages \n ";
     $name = readline(); // Waits for user input from the terminal
@@ -641,11 +641,20 @@ $scraper = new WebScraper($baseUrl, $outputFile);
 
 // $scraper->modelProducts();
 // die();
-$scraper->scrape($fr_urls, strtolower($name));
-$fr_url = 'https://www.princecraft.com/ca/fr/produits/Bateaux-pontes.aspx';
+// for english version
+$scraper->scrape($urls, strtolower($name));
 
 $url = 'https://www.princecraft.com/us/en/products/Deck-Boats.aspx';
+
 $data = $scraper->ExtractCategories($url, strtolower($name));
+
+$name = 'fr';
+// for french version
+$scraper->scrape($fr_urls, strtolower($name));
+
+// For fr
+$fr_url = 'https://www.princecraft.com/ca/fr/produits/Bateaux-pontes.aspx';
+$data = $scraper->ExtractCategories($fr_url, strtolower($name));
 
 // $data = $scraper->extractSpecifications();
 
