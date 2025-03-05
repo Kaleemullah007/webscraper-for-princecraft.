@@ -340,7 +340,7 @@ class WebScraper
         $temp['model_link'] = $links;
 
         $features = $this->extractSpecifications($links[0]);
-        $temp['starting_price'] = trim(str_replace('Starting at', '', $price)); // Add extracted price
+        $temp['starting_price'] = trim(str_replace(['Starting at','À partir de'], '', $price)); // Add extracted price
         $temp['cash_price'] = $rprice; // Add extracted price
         $temp['features'] = $features;
         return $temp;
@@ -563,10 +563,12 @@ class WebScraper
         preg_match('/name="__VIEWSTATEGENERATOR" value="(.*?)"/', $html, $viewStateGenerator);
 
 
+
+
         return [
             '__VIEWSTATEGENERATOR' => '815F84B3',
-    '__EVENTVALIDATION' => 'FJFHMgNNF2lvfuwiQMhmIN0EAnOeHwn2bdb+2t+3r1Nx9Sz/c8IrCBqcXBbEmB0XRtnXh/U6W/Vv0a3bUbXmT/e1Wacb8rJ2HwOeDtI1BojyS8zk0aKUSCEDL7Pj/RRzDQt8Ts/4+QXNldpTymNl3pnVv7U=',
-    '__VIEWSTATE' => 'f7lXGH4DcDqIhUQ1BTTNkgk+OCfRckWmT2qfy5iAHSO4pNQncD1pzUQjwXtuFvbB/wEf9TDqQANwF/FApCiD56DUBp/k4KjN6od3NDEjh8RzOrCis9EgbHQu8nU50+DNTrbtuYqGHQwzoOUy3adbWlRhN4I8PBmZ1tSNM/dp6f3oLU5y9WnpRF2rncwcOTV7a1TbEUeW9YkarmzkZ7J5MCAfBiNK/jHm6p+coWyunaI3A/AjDrAhLSfSu1a6aHPjsYXBVw=='
+    '__EVENTVALIDATION' => 'Snv4DCunSoPmpStfFMDSTJ8PQezYbsPCn8Bx0g/PtU8mz4oCgfTgtt1+d87s7Pi7yoZcIcFn32TnYrn4Xq2T6uB17/YanDZbmO8koJ3ykXLToO3efxG0TEJcWvfHBkl7g6/cW0NnC2rOVj8PQSxH+4KaUKw=',
+    '__VIEWSTATE' => '5edQsIAQzsM/T119ZEgx0GuTd7ogsMXl9BkCQPIkqSpuP8uHFgs3tHpkLJHJmwGLYvIPhMJrQXwUePmB+mjVUP7ezbLf/QDaGT8ENoh/2BlxfYQhCrzzUZX1InOcpKeLd0atl/HLsNafJ27hhh9LTLxhOxOulW+ZitvXZ8IqMbfUCkxhFJ0OjGYYu4fmXWI5/mjCxrDAPgpgaH10kAgLR5nOitte2AXru3WlSYjM47nUo9k4+4QUOR7WPkFXQpStwmBOEhNzTj5c4cLew8lh1oZTiSg8Bq+TA54m0NNjMD1ZYEN8'
         ];
         // return [
         //     '__VIEWSTATE' => $viewState[1] ?? '',
@@ -623,10 +625,6 @@ $urls = [
     'https://www.princecraft.com/ca/en/products/Pontoon-Boats.aspx'
 ];
 
-$fr_urls = [
-    'https://www.princecraft.com/ca/fr/produits/Bateaux-de-peche.aspx',
-    'https://www.princecraft.com/ca/fr/produits/Pontons.aspx'
-];
 
 $outputFile =  'Ponton-Boats.csv';
 $name = 'en';
@@ -642,19 +640,20 @@ $scraper = new WebScraper($baseUrl, $outputFile);
 // $scraper->modelProducts();
 // die();
 // for english version
-$scraper->scrape($urls, strtolower($name));
+// $scraper->scrape($urls, strtolower($name));
+// $url = 'https://www.princecraft.com/us/en/products/Deck-Boats.aspx';
+// $data = $scraper->ExtractCategories($url, strtolower($name));
 
-$url = 'https://www.princecraft.com/us/en/products/Deck-Boats.aspx';
-
-$data = $scraper->ExtractCategories($url, strtolower($name));
-
-$name = 'fr';
 // for french version
+$name = 'fr';
+$fr_urls = [
+    'https://www.princecraft.com/ca/fr/produits/Bateaux-de-peche.aspx',
+    'https://www.princecraft.com/ca/fr/produits/Pontons.aspx'
+];
 $scraper->scrape($fr_urls, strtolower($name));
 
-// For fr
-$fr_url = 'https://www.princecraft.com/ca/fr/produits/Bateaux-pontes.aspx';
-$data = $scraper->ExtractCategories($fr_url, strtolower($name));
+// $fr_url = 'https://www.princecraft.com/ca/fr/produits/Bateaux-pontes.aspx';
+// $data = $scraper->ExtractCategories($fr_url, strtolower($name));
 
 // $data = $scraper->extractSpecifications();
 
